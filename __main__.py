@@ -25,4 +25,4 @@ from app import *
 
 # Application code
 if __name__ == '__main__':
-    Invaders(width=GAME_WIDTH,height=GAME_HEIGHT).run()
+    Pytrix(width=GAME_WIDTH, height=GAME_HEIGHT).run()
