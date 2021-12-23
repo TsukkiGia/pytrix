@@ -9,7 +9,7 @@ class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = TPiece()
+        self.piece = self.pick_a_piece()
         self.last_keys = ()
         self.done = []
 
@@ -38,6 +38,7 @@ class Pytrix(GameApp):
                 for item in self.piece.blocks:
                     item.y -= BLOCK_LENGTH
                 self.time = 0
+                self.piece.current_y -= BLOCK_LENGTH
         else:
             for item in self.piece.blocks:
                 self.done.append(item)
@@ -56,11 +57,14 @@ def move(self):
     if 'right' in self.input.keys and self.piece.canMoveRight() and self.last_keys == ():
         for item in self.piece.blocks:
             item.x += BLOCK_LENGTH
+        self.piece.current_x += BLOCK_LENGTH
     if 'left' in self.input.keys and self.piece.canMoveLeft() and self.last_keys == ():
         for item in self.piece.blocks:
             item.x -= BLOCK_LENGTH
+        self.piece.current_x -= BLOCK_LENGTH
     if 'down' in self.input.keys and self.piece.canDrop() and self.last_keys == ():
         for item in self.piece.blocks:
             item.y -= BLOCK_LENGTH
+        self.piece.current_y -= BLOCK_LENGTH
 
     self.last_keys = self.input.keys

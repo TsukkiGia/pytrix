@@ -20,6 +20,10 @@ class Block(GRectangle):
 
 
 class Piece(object):
+    def __init__(self, init_x, init_y):
+        self.current_x = init_x
+        self.current_y = init_y
+
     def canDrop(self):
         return all([block.bottom > 0 for block in self.blocks])
 
@@ -32,76 +36,82 @@ class Piece(object):
 
 class OPiece(Piece):
     def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
+        super().__init__(init_x, init_y)
         self.blocks = [
-            Block(x = init_x-BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x - BLOCK_LENGTH/2, y = init_y - BLOCK_LENGTH/2, width = BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2),
-            Block(x =( init_x)+(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + BLOCK_LENGTH/2, y = init_y - BLOCK_LENGTH/2, width = BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2),
-            Block(x = init_x-BLOCK_LENGTH/2, y = init_y -3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x - BLOCK_LENGTH/2, y = init_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2),
-            Block(x =( init_x)+(BLOCK_LENGTH/2), y = init_y -3*BLOCK_LENGTH/2,
-                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2)
+            Block(x = init_x + BLOCK_LENGTH/2, y = init_y - 3*BLOCK_LENGTH/2,
+                  width = BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2)
         ]
 
 
 class IPiece(Piece):
    def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
+        super().__init__(init_x, init_y)
         self.blocks = [
-            Block(x = init_x+(3*BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + (3*BLOCK_LENGTH/2), y = init_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-            Block(x =( init_x)+(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x +(BLOCK_LENGTH/2), y = init_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-            Block(x = init_x-BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x - BLOCK_LENGTH/2, y = init_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-            Block(x =( init_x)-3*(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2,
+            Block(x = init_x - 3*(BLOCK_LENGTH/2), y = init_y - BLOCK_LENGTH/2,
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
         ]
 
 
 class SPiece(Piece):
    def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
+        super().__init__(init_x, init_y)
         self.blocks = [
-            Block(x = init_x+(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
-            Block(x =( init_x)+(BLOCK_LENGTH/2), y = init_y -3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + BLOCK_LENGTH/2, y = init_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
-            Block(x = init_x+3*BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + 3*BLOCK_LENGTH/2, y = init_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
-            Block(x =( init_x)-(BLOCK_LENGTH/2), y = init_y -3*BLOCK_LENGTH/2,
+            Block(x = init_x - BLOCK_LENGTH/2, y = init_y - 3*BLOCK_LENGTH/2,
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
         ]
 
 
 class LPiece(Piece):
     def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
+        super().__init__(init_x, init_y)
         self.blocks = [
-            Block(x = init_x+(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
-            Block(x = init_x+(BLOCK_LENGTH/2), y = init_y -3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + BLOCK_LENGTH/2, y = init_y -3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
-            Block(x = init_x+(BLOCK_LENGTH/2), y = init_y -5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + BLOCK_LENGTH/2, y = init_y -5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
-            Block(x = init_x+3*(BLOCK_LENGTH/2), y = init_y -5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + 3*BLOCK_LENGTH/2, y = init_y -5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
         ]
 
 
 class JPiece(Piece):
     def __init__(self, init_x=GAME_WIDTH/2, init_y=GAME_HEIGHT):
+        super().__init__(init_x, init_y)
         self.blocks = [
-            Block(x=init_x+BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
-            Block(x=(init_x)+(3*BLOCK_LENGTH/2), y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x + 3*BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
-            Block(x=init_x-BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x - BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
-            Block(x=(init_x)+(3*BLOCK_LENGTH/2), y=init_y-(3*BLOCK_LENGTH/2),
+            Block(x = init_x +(3*BLOCK_LENGTH/2), y=init_y-(3*BLOCK_LENGTH/2),
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2)
         ]
 
 
 class ZPiece(Piece):
     def __init__(self, init_x=GAME_WIDTH/2, init_y=GAME_HEIGHT):
+        super().__init__(init_x, init_y)
         self.blocks = [
             Block(x=init_x-BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
@@ -116,6 +126,7 @@ class ZPiece(Piece):
 
 class TPiece(Piece):
     def __init__(self, init_x=GAME_WIDTH/2, init_y=GAME_HEIGHT):
+        super().__init__(init_x, init_y)
         self.blocks = [
             Block(x=init_x-BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
