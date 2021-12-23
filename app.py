@@ -8,7 +8,7 @@ class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = LPiece()
+        self.piece = JPiece()
         self.last_keys = ()
         self.done = []
 
@@ -30,8 +30,10 @@ class Pytrix(GameApp):
             item.draw(self.view)
         for item in self.piece.blocks:
             item.draw(self.view)
-    
-## Helper functions
+
+# Helper functions
+
+
 def move(self):
     if 'right' in self.input.keys and self.piece.canMoveRight() and self.last_keys == ():
         for item in self.piece.blocks:

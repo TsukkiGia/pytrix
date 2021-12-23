@@ -89,13 +89,13 @@ class LPiece(Piece):
 class JPiece(Piece):
     def __init__(self):
         self.blocks = [
-            Block(x=GAME_WIDTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=GAME_WIDTH/2+BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=(GAME_WIDTH/2)+(3*BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2-BLOCK_LENGTH, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=GAME_WIDTH/2-BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH), y=GAME_HEIGHT-(3*BLOCK_LENGTH/2),
+            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH/2), y=GAME_HEIGHT-(3*BLOCK_LENGTH/2),
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
         ]
 
@@ -103,13 +103,13 @@ class JPiece(Piece):
 class ZPiece(Piece):
     def __init__(self):
         self.blocks = [
-            Block(x=GAME_WIDTH/2-BLOCK_LENGTH, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=GAME_WIDTH/2-BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=GAME_WIDTH/2+BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=(GAME_WIDTH/2+BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH), y=GAME_HEIGHT-(3*BLOCK_LENGTH/2),
+            Block(x=(GAME_WIDTH/2)+(3*BLOCK_LENGTH/2), y=GAME_HEIGHT-(3*BLOCK_LENGTH/2),
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
         ]
 
@@ -117,12 +117,12 @@ class ZPiece(Piece):
 class TPiece(Piece):
     def __init__(self):
         self.blocks = [
-            Block(x=GAME_WIDTH/2-BLOCK_LENGTH, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=GAME_WIDTH/2-BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=GAME_WIDTH/2+BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=(GAME_WIDTH/2+BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH), y=GAME_HEIGHT-BLOCK_LENGTH/2,
+            Block(x=(GAME_WIDTH/2)+(3*BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2,
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2)
         ]
