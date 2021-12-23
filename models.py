@@ -31,57 +31,57 @@ class Piece(object):
 
 
 class OPiece(Piece):
-    def __init__(self):
+    def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
         self.blocks = [
-            Block(x=GAME_WIDTH/2-BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x-BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x =( init_x)+(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2-BLOCK_LENGTH/2, y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x-BLOCK_LENGTH/2, y = init_y -3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2,
+            Block(x =( init_x)+(BLOCK_LENGTH/2), y = init_y -3*BLOCK_LENGTH/2,
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2)
         ]
 
 
 class IPiece(Piece):
-    def __init__(self):
+   def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
         self.blocks = [
-            Block(x=GAME_WIDTH/2+(3*BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x+(3*BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x =( init_x)+(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2-BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x-BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)-3*(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2,
+            Block(x =( init_x)-3*(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2,
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
         ]
 
 
 class SPiece(Piece):
-    def __init__(self):
+   def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
         self.blocks = [
-            Block(x=GAME_WIDTH/2+(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x+(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x =( init_x)+(BLOCK_LENGTH/2), y = init_y -3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2+3*BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x+3*BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
-            Block(x=(GAME_WIDTH/2)-(BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2,
+            Block(x =( init_x)-(BLOCK_LENGTH/2), y = init_y -3*BLOCK_LENGTH/2,
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
         ]
 
 
 class LPiece(Piece):
-    def __init__(self):
+    def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
         self.blocks = [
-            Block(x=GAME_WIDTH/2+(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x+(BLOCK_LENGTH/2), y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2+(BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x+(BLOCK_LENGTH/2), y = init_y -3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2+(BLOCK_LENGTH/2), y=GAME_HEIGHT-5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x+(BLOCK_LENGTH/2), y = init_y -5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
-            Block(x=GAME_WIDTH/2+3*(BLOCK_LENGTH/2), y=GAME_HEIGHT-5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = init_x+3*(BLOCK_LENGTH/2), y = init_y -5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
         ]
 
