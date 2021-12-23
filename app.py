@@ -15,6 +15,7 @@ from game2d import *
 from wave import *
 from models import *
 
+
 class Pytrix(GameApp):
 
     def start(self):
