@@ -19,11 +19,9 @@ class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = OPiece()
+        self.piece = IPiece()
         self.last_keys = ()
         self.done = []
-
-        # Welcome Screen
 
     def update(self, dt):
         self.time += dt
@@ -44,10 +42,6 @@ class Pytrix(GameApp):
                     item.y -= BLOCK_LENGTH
                 self.time = 0
         else:
-            self.piece.blocks[0].bottom = BLOCK_LENGTH
-            self.piece.blocks[1].bottom = BLOCK_LENGTH
-            self.piece.blocks[2].bottom = 0
-            self.piece.blocks[3].bottom = 0
             for item in self.piece.blocks:
                 self.done.append(item)
             self.piece = OPiece()

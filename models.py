@@ -35,12 +35,22 @@ class OPiece(Piece):
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2)
         ]
 
-class IPiece(object):
+class IPiece(Piece):
+    def __init__(self):
+        self.blocks = [
+            Block(x=GAME_WIDTH/2+(3*BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+            Block(x=GAME_WIDTH/2-BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+            Block(x=(GAME_WIDTH/2)-3*(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2,
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
+        ]
+
+
+class ZPiece(Piece):
     pass
 
-
-class ZPiece(object):
-    pass
-
-class LPiece(object):
+class LPiece(Piece):
     pass
