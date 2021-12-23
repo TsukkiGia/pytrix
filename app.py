@@ -4,16 +4,17 @@ from wave import *
 from models import *
 import random
 
+
 class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = self.pick_a_piece()
+        self.piece = TPiece()
         self.last_keys = ()
         self.done = []
 
     def pick_a_piece(self):
-        number = random.randint(0,6)
+        number = random.randint(0, 6)
         if number == 0:
             return OPiece()
         if number == 1:
@@ -28,7 +29,6 @@ class Pytrix(GameApp):
             return TPiece()
         if number == 6:
             return SPiece()
-
 
     def update(self, dt):
         self.time += dt
