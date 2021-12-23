@@ -27,7 +27,6 @@ class Pytrix(GameApp):
 
     def update(self, dt):
         self.time += dt
-
         if 'right' in self.input.keys and self.last_keys == ():
             for item in self.piece.blocks:
                 item.x += BLOCK_LENGTH
