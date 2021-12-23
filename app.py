@@ -1,15 +1,3 @@
-"""
-Primary module for Alien Invaders
-
-This module contains the main controller class for the Alien Invaders app.
-There is no need for any additional classes in this module.  If you need
-more classes, 99% of the time they belong in either the wave module or the
-models module. If you are unsure about where a new class should go, post a
-question on Piazza.
-
-Adam Issah, abi6
-December 6, 2021
-"""
 from consts import *
 from game2d import *
 from wave import *
@@ -25,17 +13,7 @@ class Pytrix(GameApp):
 
     def update(self, dt):
         self.time += dt
-        if 'right' in self.input.keys and self.last_keys == ():
-            for item in self.piece.blocks:
-                item.x += BLOCK_LENGTH
-        if 'left' in self.input.keys and self.last_keys == ():
-            for item in self.piece.blocks:
-                item.x -= BLOCK_LENGTH
-        if 'down' in self.input.keys and self.last_keys == ():
-            for item in self.piece.blocks:
-                item.y -= BLOCK_LENGTH
-
-        self.last_keys = self.input.keys
+        move(self)
         if self.piece.canDrop():
             if self.time > 0.8:
                 for item in self.piece.blocks:
@@ -51,3 +29,17 @@ class Pytrix(GameApp):
             item.draw(self.view)
         for item in self.piece.blocks:
             item.draw(self.view)
+    
+## Helper functions
+def move(self):
+    if 'right' in self.input.keys and self.piece.canMoveRight() and self.last_keys == ():
+        for item in self.piece.blocks:
+            item.x += BLOCK_LENGTH
+    if 'left' in self.input.keys and self.piece.canMoveLeft() and self.last_keys == ():
+        for item in self.piece.blocks:
+            item.x -= BLOCK_LENGTH
+    if 'down' in self.input.keys and self.piece.canDrop() and self.last_keys == ():
+        for item in self.piece.blocks:
+            item.y -= BLOCK_LENGTH
+
+    self.last_keys = self.input.keys

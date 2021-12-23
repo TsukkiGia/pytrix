@@ -21,6 +21,14 @@ class Piece(object):
     def canDrop(self):
         return all([block.bottom > 0 for block in self.blocks])
 
+
+    def canMoveLeft(self):
+        return all([block.left > 0 for block in self.blocks])
+
+
+    def canMoveRight(self):
+        return all([block.right < GAME_WIDTH for block in self.blocks])
+
 class OPiece(Piece):
     def __init__(self):
         self.blocks = [
