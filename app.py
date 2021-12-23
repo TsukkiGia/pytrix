@@ -19,7 +19,7 @@ class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = IPiece()
+        self.piece = LPiece()
         self.last_keys = ()
         self.done = []
 

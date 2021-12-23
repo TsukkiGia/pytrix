@@ -22,7 +22,6 @@ class Piece(object):
         return all([block.bottom > 0 for block in self.blocks])
 
 class OPiece(Piece):
-
     def __init__(self):
         self.blocks = [
             Block(x=GAME_WIDTH/2-BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -49,8 +48,28 @@ class IPiece(Piece):
         ]
 
 
-class ZPiece(Piece):
-    pass
+class SPiece(Piece):
+    def __init__(self):
+        self.blocks = [
+            Block(x=GAME_WIDTH/2+(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x=(GAME_WIDTH/2)+(BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x=GAME_WIDTH/2+3*BLOCK_LENGTH/2, y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x=(GAME_WIDTH/2)-(BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2,
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
+        ]
 
 class LPiece(Piece):
-    pass
+     def __init__(self):
+        self.blocks = [
+            Block(x=GAME_WIDTH/2+(BLOCK_LENGTH/2), y=GAME_HEIGHT-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
+            Block(x=GAME_WIDTH/2+(BLOCK_LENGTH/2), y=GAME_HEIGHT-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
+            Block(x=GAME_WIDTH/2+(BLOCK_LENGTH/2), y=GAME_HEIGHT-5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
+            Block(x=GAME_WIDTH/2+3*(BLOCK_LENGTH/2), y=GAME_HEIGHT-5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
+        ]
