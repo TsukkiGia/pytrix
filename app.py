@@ -9,7 +9,7 @@ class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = LPiece()
+        self.piece = JPiece()
         self.last_keys = ()
         self.done = []
         self.background = GRectangle(
@@ -44,7 +44,7 @@ class Pytrix(GameApp):
         else:
             for item in self.piece.blocks:
                 self.done.append(item)
-            self.piece = LPiece()
+            self.piece = JPiece()
 
     def draw(self):
         self.background.draw(self.view)
