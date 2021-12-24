@@ -103,7 +103,8 @@ def move(self):
             item.y -= BLOCK_LENGTH
         self.piece.current_y -= BLOCK_LENGTH
     if 'up' in self.input.keys and self.last_keys == ():
-        self.piece.rotate()
+        if (self.piece.canRotate(collapse_board(self), self.piece.get_next_orientation())):
+            self.piece.rotate()
 
     self.last_keys = self.input.keys
 

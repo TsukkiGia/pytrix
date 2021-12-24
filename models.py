@@ -22,25 +22,38 @@ class Block(GRectangle):
 
 
 class Piece(object):
-    def __init__(self, init_x, init_y):
-        self.current_x = init_x
-        self.current_y = init_y
+      def __init__(self, init_x, init_y):
+            self.current_x = init_x
+            self.current_y = init_y
 
-    def canDrop(self, done):
-        return all([block.bottom > 0 for block in self.blocks]) and not any([any([block.bottom == done_block.top and block.left == done_block.left and block.right == done_block.right for done_block in done]) for block in self.blocks])
+      def canDrop(self, done):
+            return all([block.bottom > 0 for block in self.blocks]) and not any([any([block.bottom == done_block.top and block.left == done_block.left and block.right == done_block.right for done_block in done]) for block in self.blocks])
 
-    def canMoveLeft(self, done):
-        return all([block.left > 0 for block in self.blocks]) and not any([any([block.left == done_block.right and block.top == done_block.top and block.bottom == done_block.bottom for done_block in done]) for block in self.blocks])
+      def canMoveLeft(self, done):
+            return all([block.left > 0 for block in self.blocks]) and not any([any([block.left == done_block.right and block.top == done_block.top and block.bottom == done_block.bottom for done_block in done]) for block in self.blocks])
 
-    def canMoveRight(self, done):
-        return all([block.right < GAME_WIDTH for block in self.blocks]) and not any([any([block.right == done_block.left and block.top == done_block.top and block.bottom == done_block.bottom for done_block in done]) for block in self.blocks])
+      def canMoveRight(self, done):
+            return all([block.right < GAME_WIDTH for block in self.blocks]) and not any([any([block.right == done_block.left and block.top == done_block.top and block.bottom == done_block.bottom for done_block in done]) for block in self.blocks])
 
-    def canRotate(self, done, tentative_blocks):
-          return all([block.bottom >= 0 and block.left >= 0 and block.right <= GAME_WIDTH for block in tentative_blocks]) and not any([any([done_block.x == block.x and done_block.y == block.y for done_block in done]) for block in tentative_blocks])
+      def canRotate(self, done, tentative_blocks):
+            return all([block.bottom >= 0 and block.left >= 0 and block.right <= GAME_WIDTH for block in tentative_blocks]) and not any([any([done_block.x == block.x and done_block.y == block.y for done_block in done]) for block in tentative_blocks])
 
-
-    def __repr__(self):
-        return f"{self.__class__.__name__}: ({self.current_x}, {self.current_y}), {self.orientation}"
+      def rotate(self):
+        if self.orientation == ORIENTATION.West:
+            self.blocks = self.get_next_orientation()
+            self.orientation = ORIENTATION.North
+        elif self.orientation == ORIENTATION.North:
+            self.blocks = self.get_next_orientation()
+            self.orientation = ORIENTATION.East
+        elif self.orientation == ORIENTATION.East:
+            self.blocks = self.get_next_orientation()
+            self.orientation = ORIENTATION.South
+        elif self.orientation == ORIENTATION.South:
+            self.blocks = self.get_next_orientation()
+            self.orientation = ORIENTATION.West
+      
+      def __repr__(self):
+            return f"{self.__class__.__name__}: ({self.current_x}, {self.current_y}), {self.orientation}"
 
 
 class OPiece(Piece):
@@ -58,12 +71,12 @@ class OPiece(Piece):
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2)
         ]
 
-    def rotate(self):
-        pass
+    def get_next_orientation(self):
+          return self.blocks
 
 
 class IPiece(Piece):
-    def __init__(self, init_x=GAME_WIDTH/2, init_y=GAME_HEIGHT, orientation=ORIENTATION.North):
+      def __init__(self, init_x=GAME_WIDTH/2, init_y=GAME_HEIGHT, orientation=ORIENTATION.North):
         super().__init__(init_x, init_y)
         self.orientation = orientation
         self.blocks = [
@@ -77,55 +90,51 @@ class IPiece(Piece):
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
         ]
 
-    def rotate(self):
-        if self.orientation == ORIENTATION.West:
-            self.orientation = ORIENTATION.North
-            self.blocks = [
-                Block(x=self.current_x + (3*BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x + (BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x - 3*(BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2,
-                      width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
-            ]
-        elif self.orientation == ORIENTATION.North:
-            self.orientation = ORIENTATION.East
-            self.blocks = [
-                Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 7*BLOCK_LENGTH/2,
-                      width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
-            ]
-        elif self.orientation == ORIENTATION.East:
-            self.orientation = ORIENTATION.South
-            self.blocks = [
-                Block(x=self.current_x + (3*BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x + (BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x - 3*(BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2,
-                      width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
-            ]
-        elif self.orientation == ORIENTATION.South:
-            self.orientation = ORIENTATION.West
-            self.blocks = [
-                Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - 5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
-                Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - 7*BLOCK_LENGTH/2,
-                      width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
-            ]
+      def get_next_orientation(self):
+            if self.orientation == ORIENTATION.West:
+                  return [
+                  Block(x=self.current_x + (3*BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x + (BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x - 3*(BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2,
+                        width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
+                  ]
+            elif self.orientation == ORIENTATION.North:
+                  return [
+                  Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 7*BLOCK_LENGTH/2,
+                        width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
+                  ]
+            elif self.orientation == ORIENTATION.East:
+                  return [
+                  Block(x=self.current_x + (3*BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x + (BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x - 3*(BLOCK_LENGTH/2), y=self.current_y - BLOCK_LENGTH/2,
+                        width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
+                  ]
+            elif self.orientation == ORIENTATION.South:
+                  return [
+                  Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - 5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                        height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2),
+                  Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - 7*BLOCK_LENGTH/2,
+                        width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='green', linecolor='black', linewidth=2)
+                  ]
 
 
 class SPiece(Piece):
@@ -143,10 +152,9 @@ class SPiece(Piece):
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
         ]
 
-    def rotate(self):
+    def get_next_orientation(self):
         if self.orientation == ORIENTATION.West:
-            self.orientation = ORIENTATION.North
-            self.blocks = [
+            return [
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -158,8 +166,7 @@ class SPiece(Piece):
             ]
 
         elif self.orientation == ORIENTATION.North:
-            self.orientation = ORIENTATION.East
-            self.blocks = [
+            return [
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -171,8 +178,7 @@ class SPiece(Piece):
             ]
 
         elif self.orientation == ORIENTATION.East:
-            self.orientation = ORIENTATION.South
-            self.blocks = [
+            return [
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -184,8 +190,7 @@ class SPiece(Piece):
             ]
 
         elif self.orientation == ORIENTATION.South:
-            self.orientation = ORIENTATION.West
-            self.blocks = [
+            return [
                 Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
                 Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -212,10 +217,9 @@ class LPiece(Piece):
                   height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2)
         ]
 
-    def rotate(self):
+    def get_next_orientation(self):
         if self.orientation == ORIENTATION.West:
-            self.orientation = ORIENTATION.North
-            self.blocks = [
+            return [
                 Block(x=self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -226,8 +230,7 @@ class LPiece(Piece):
                       height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2)
             ]
         elif self.orientation == ORIENTATION.North:
-            self.orientation = ORIENTATION.East
-            self.blocks = [
+            return[
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -238,8 +241,7 @@ class LPiece(Piece):
                       height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2)
             ]
         elif self.orientation == ORIENTATION.East:
-            self.orientation = ORIENTATION.South
-            self.blocks = [
+            return [
                 Block(x=self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -250,8 +252,7 @@ class LPiece(Piece):
                       height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2)
             ]
         elif self.orientation == ORIENTATION.South:
-            self.orientation = ORIENTATION.West
-            self.blocks = [
+            return  [
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='purple', linecolor='black', linewidth=2),
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -278,10 +279,9 @@ class JPiece(Piece):
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2)
         ]
 
-    def rotate(self):
+    def get_next_orientation(self):
         if self.orientation == ORIENTATION.West:
-            self.orientation = ORIENTATION.North
-            self.blocks = [
+            return[
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
                 Block(x=self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -292,8 +292,7 @@ class JPiece(Piece):
                       width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2)]
 
         elif self.orientation == ORIENTATION.North:
-            self.orientation = ORIENTATION.East
-            self.blocks = [
+            return [
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
                 Block(x=self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -305,8 +304,7 @@ class JPiece(Piece):
             ]
 
         elif self.orientation == ORIENTATION.East:
-            self.orientation = ORIENTATION.South
-            self.blocks = [
+            return [
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
                 Block(x=self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -318,8 +316,7 @@ class JPiece(Piece):
             ]
 
         elif self.orientation == ORIENTATION.South:
-            self.orientation = ORIENTATION.West
-            self.blocks = [
+            return[
                 Block(x=self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
                 Block(x=self.current_x - BLOCK_LENGTH/2, y=self.current_y-5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -346,10 +343,9 @@ class ZPiece(Piece):
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
         ]
 
-    def rotate(self):
+    def get_next_orientation(self):
         if self.orientation == ORIENTATION.West:
-            self.orientation = ORIENTATION.North
-            self.blocks = [
+            return [
                 Block(x=self.current_x+3*BLOCK_LENGTH/2, y=self.current_y+BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -360,8 +356,7 @@ class ZPiece(Piece):
                       width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
             ]
         elif self.orientation == ORIENTATION.North:
-            self.orientation = ORIENTATION.East
-            self.blocks = [
+            return [
                 Block(x=self.current_x-BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -372,8 +367,7 @@ class ZPiece(Piece):
                       width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
             ]
         elif self.orientation == ORIENTATION.East:
-            self.orientation = ORIENTATION.South
-            self.blocks = [
+            return[
                 Block(x=self.current_x+3*BLOCK_LENGTH/2, y=self.current_y+BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -384,58 +378,7 @@ class ZPiece(Piece):
                       width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
             ]
         elif self.orientation == ORIENTATION.South:
-            self.orientation = ORIENTATION.West
-            self.blocks = [
-                Block(x=self.current_x-BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=(self.current_x+BLOCK_LENGTH/2), y=self.current_y-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=(self.current_x)+(3*BLOCK_LENGTH/2), y=self.current_y-(3*BLOCK_LENGTH/2),
-                      width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
-            ]
-
-    def rotate(self):
-        if self.orientation == ORIENTATION.West:
-            self.orientation = ORIENTATION.North
-            self.blocks = [
-                Block(x=self.current_x+3*BLOCK_LENGTH/2, y=self.current_y+BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=(self.current_x+BLOCK_LENGTH/2), y=self.current_y-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=(self.current_x)+(3*BLOCK_LENGTH/2), y=self.current_y-(BLOCK_LENGTH/2),
-                      width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
-            ]
-        elif self.orientation == ORIENTATION.North:
-            self.orientation = ORIENTATION.East
-            self.blocks = [
-                Block(x=self.current_x-BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=(self.current_x+BLOCK_LENGTH/2), y=self.current_y-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=(self.current_x)+(3*BLOCK_LENGTH/2), y=self.current_y-(3*BLOCK_LENGTH/2),
-                      width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
-            ]
-        elif self.orientation == ORIENTATION.East:
-            self.orientation = ORIENTATION.South
-            self.blocks = [
-                Block(x=self.current_x+3*BLOCK_LENGTH/2, y=self.current_y+BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=(self.current_x+BLOCK_LENGTH/2), y=self.current_y-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
-                      height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
-                Block(x=(self.current_x)+(3*BLOCK_LENGTH/2), y=self.current_y-(BLOCK_LENGTH/2),
-                      width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2)
-            ]
-        elif self.orientation == ORIENTATION.South:
-            self.orientation = ORIENTATION.West
-            self.blocks = [
+            return [
                 Block(x=self.current_x-BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='brown', linecolor='black', linewidth=2),
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -462,10 +405,9 @@ class TPiece(Piece):
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2)
         ]
 
-    def rotate(self):
+    def get_next_orientation(self):
         if self.orientation == ORIENTATION.West:
-            self.orientation = ORIENTATION.North
-            self.blocks = [
+            return [
                 Block(x=self.current_x-BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -475,8 +417,7 @@ class TPiece(Piece):
                 Block(x=(self.current_x)+(3*BLOCK_LENGTH/2), y=self.current_y-BLOCK_LENGTH/2,
                       width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2)]
         elif self.orientation == ORIENTATION.North:
-            self.orientation = ORIENTATION.East
-            self.blocks = [
+            return [
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2 + BLOCK_LENGTH, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -486,8 +427,7 @@ class TPiece(Piece):
                 Block(x=(self.current_x)+(3*BLOCK_LENGTH/2), y=self.current_y-BLOCK_LENGTH/2,
                       width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2)]
         elif self.orientation == ORIENTATION.East:
-            self.orientation = ORIENTATION.South
-            self.blocks = [
+            return[
                 Block(x=self.current_x-BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
@@ -497,8 +437,7 @@ class TPiece(Piece):
                 Block(x=(self.current_x)+(3*BLOCK_LENGTH/2), y=self.current_y-BLOCK_LENGTH/2,
                       width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2)]
         elif self.orientation == ORIENTATION.South:
-            self.orientation = ORIENTATION.West
-            self.blocks = [
+            return [
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2 + BLOCK_LENGTH, width=BLOCK_LENGTH,
                       height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
                 Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
