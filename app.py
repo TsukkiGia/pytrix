@@ -9,7 +9,7 @@ class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = self.pick_a_piece()
+        self.piece = IPiece()
         self.last_keys = ()
         self.done = []
 
@@ -42,7 +42,7 @@ class Pytrix(GameApp):
         else:
             for item in self.piece.blocks:
                 self.done.append(item)
-            self.piece = self.pick_a_piece()
+            self.piece = IPiece()
 
     def draw(self):
         for item in self.done:
@@ -66,5 +66,7 @@ def move(self):
         for item in self.piece.blocks:
             item.y -= BLOCK_LENGTH
         self.piece.current_y -= BLOCK_LENGTH
+    if 'up' in self.input.keys and self.last_keys == ():
+        self.piece.rotate()
 
     self.last_keys = self.input.keys
