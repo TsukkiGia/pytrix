@@ -18,7 +18,7 @@ class Block(GRectangle):
         self.visible = True
 
     def __repr__(self):
-        return f"{self.x}, {self.y}, {self.bottom}"
+        return f"{self.bottom}"
 
 
 class Piece(object):

@@ -52,6 +52,8 @@ class Pytrix(GameApp):
                 column = block.left//BLOCK_LENGTH
                 self.board[int(row)][int(column)] = block
             self.piece = self.pick_a_piece()
+            self.clearRows()
+
         
         pp = pprint.PrettyPrinter()
         pp.pprint(self.board)
@@ -67,6 +69,22 @@ class Pytrix(GameApp):
                     item.draw(self.view)
         for item in self.piece.blocks:
             item.draw(self.view)
+    
+    def clearRows(self):
+        new_board = []
+        for row in self.board:
+            full = all([item is not None for item in row])
+            if full:
+                for above_row in new_board:
+                    for above_item in above_row:
+                        if above_item is not None:
+                            above_item.y -= BLOCK_LENGTH
+            else:
+                new_board.append(row)
+        rows_to_add = len(self.board) - len(new_board)
+        for _ in range(rows_to_add):
+            new_board.insert(0,[None for _ in range(GAME_WIDTH//BLOCK_LENGTH)])
+        self.board = new_board
 
 # Helper functions
 
