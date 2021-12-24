@@ -35,6 +35,9 @@ class Piece(object):
     def canMoveRight(self):
         return all([block.right < GAME_WIDTH for block in self.blocks])
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}: ({self.current_x}, {self.current_y}), {self.orientation}"
+
 
 class OPiece(Piece):
     def __init__(self, init_x=GAME_WIDTH/2, init_y=GAME_HEIGHT, orientation=ORIENTATION.North):

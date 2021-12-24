@@ -10,7 +10,7 @@ class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = JPiece()
+        self.piece = self.pick_a_piece()
         self.last_keys = ()
         self.done = []
         self.lines = []
@@ -38,6 +38,7 @@ class Pytrix(GameApp):
             return SPiece()
 
     def update(self, dt):
+        print(self.piece)
         self.time += dt
         move(self)
         if self.piece.canDrop():
@@ -49,7 +50,7 @@ class Pytrix(GameApp):
         else:
             for item in self.piece.blocks:
                 self.done.append(item)
-            self.piece = JPiece()
+            self.piece = self.pick_a_piece()
         monitor(self)
         pp = pprint.PrettyPrinter()
         pp.pprint(self.board)
