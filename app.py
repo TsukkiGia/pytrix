@@ -41,7 +41,7 @@ class Pytrix(GameApp):
         print(self.piece)
         self.time += dt
         move(self)
-        if self.piece.canDrop():
+        if self.piece.canDrop(self.done):
             if self.time > 0.8:
                 for item in self.piece.blocks:
                     item.y -= BLOCK_LENGTH
@@ -78,7 +78,7 @@ def move(self):
         for item in self.piece.blocks:
             item.x -= BLOCK_LENGTH
         self.piece.current_x -= BLOCK_LENGTH
-    if 'down' in self.input.keys and self.piece.canDrop() and self.last_keys == ():
+    if 'down' in self.input.keys and self.piece.canDrop(self.done) and self.last_keys == ():
         for item in self.piece.blocks:
             item.y -= BLOCK_LENGTH
         self.piece.current_y -= BLOCK_LENGTH

@@ -26,8 +26,8 @@ class Piece(object):
         self.current_x = init_x
         self.current_y = init_y
 
-    def canDrop(self):
-        return all([block.bottom > 0 for block in self.blocks])
+    def canDrop(self, done):
+        return all([block.bottom > 0 for block in self.blocks]) and not any([any([block.bottom == done_block.top and block.left == done_block.left and block.right == done_block.right for done_block in done]) for block in self.blocks])
 
     def canMoveLeft(self):
         return all([block.left > 0 for block in self.blocks])
