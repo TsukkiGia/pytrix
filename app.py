@@ -70,11 +70,11 @@ class Pytrix(GameApp):
 
 
 def move(self):
-    if 'right' in self.input.keys and self.piece.canMoveRight() and self.last_keys == ():
+    if 'right' in self.input.keys and self.piece.canMoveRight(self.done) and self.last_keys == ():
         for item in self.piece.blocks:
             item.x += BLOCK_LENGTH
         self.piece.current_x += BLOCK_LENGTH
-    if 'left' in self.input.keys and self.piece.canMoveLeft() and self.last_keys == ():
+    if 'left' in self.input.keys and self.piece.canMoveLeft(self.done) and self.last_keys == ():
         for item in self.piece.blocks:
             item.x -= BLOCK_LENGTH
         self.piece.current_x -= BLOCK_LENGTH

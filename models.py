@@ -29,11 +29,11 @@ class Piece(object):
     def canDrop(self, done):
         return all([block.bottom > 0 for block in self.blocks]) and not any([any([block.bottom == done_block.top and block.left == done_block.left and block.right == done_block.right for done_block in done]) for block in self.blocks])
 
-    def canMoveLeft(self):
-        return all([block.left > 0 for block in self.blocks])
+    def canMoveLeft(self, done):
+        return all([block.left > 0 for block in self.blocks]) and not any([any([block.left == done_block.right and block.top == done_block.top and block.bottom == done_block.bottom for done_block in done]) for block in self.blocks])
 
-    def canMoveRight(self):
-        return all([block.right < GAME_WIDTH for block in self.blocks])
+    def canMoveRight(self, done):
+        return all([block.right < GAME_WIDTH for block in self.blocks]) and not any([any([block.right == done_block.left and block.top == done_block.top and block.bottom == done_block.bottom for done_block in done]) for block in self.blocks])
 
     def __repr__(self):
         return f"{self.__class__.__name__}: ({self.current_x}, {self.current_y}), {self.orientation}"
