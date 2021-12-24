@@ -7,7 +7,8 @@ import enum
 ### WINDOW CONSTANTS (all coordinates are in pixels) ###
 
 #: the width of the game display
-GAME_WIDTH = 300
+GAME_WIDTH = 600
+BOARD_WIDTH = 300
 #: the height of the game display
 GAME_HEIGHT = 600
 
@@ -19,3 +20,8 @@ class ORIENTATION(enum.Enum):
     East = 2
     South = 3
     West = 4
+
+
+STATE_PAUSED = 0
+STATE_ACTIVE = 1
+STATE_END = 2

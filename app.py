@@ -9,14 +9,20 @@ import pprint
 class Pytrix(GameApp):
 
     def start(self):
+        self.state = STATE_ACTIVE
         self.time = 0
         self.piece = self.pick_a_piece()
         self.last_keys = ()
         self.lines = []
         self.background = GRectangle(
-            x=GAME_WIDTH/2, y=GAME_HEIGHT/2, width=GAME_WIDTH, height=GAME_HEIGHT, fillcolor='black')
-        self.board = [[None for i in range(GAME_WIDTH//30)]
+            x=BOARD_WIDTH/2, y=GAME_HEIGHT/2, width=BOARD_WIDTH, height=GAME_HEIGHT, fillcolor='black')
+        self.board = [[None for i in range(BOARD_WIDTH//30)]
                       for j in range(GAME_HEIGHT//30)]
+        self.scorepane = GRectangle(
+            x=3*BOARD_WIDTH/2, y=GAME_HEIGHT/2, width=BOARD_WIDTH, height=GAME_HEIGHT, fillcolor='gray')
+        # self.board = [[None for i in range(BOARD_WIDTH//30)]
+        #               for j in range(GAME_HEIGHT//30)]
+        self.text = None
         grid(self)
 
     def pick_a_piece(self):
@@ -37,39 +43,65 @@ class Pytrix(GameApp):
             return SPiece()
 
     def update(self, dt):
-        print(self.piece)
-        self.time += dt
-        move(self)
-        if self.piece.canDrop(collapse_board(self)):
-            if self.time > 0.8:
-                for item in self.piece.blocks:
-                    item.y -= BLOCK_LENGTH
-                self.time = 0
-                self.piece.current_y -= BLOCK_LENGTH
-        else:
-            for block in self.piece.blocks:
-                row = GAME_HEIGHT//BLOCK_LENGTH - (block.top//BLOCK_LENGTH)
-                column = block.left//BLOCK_LENGTH
-                self.board[int(row)][int(column)] = block
-            self.piece = self.pick_a_piece()
-            self.clearRows()
+        if self.state == STATE_ACTIVE:
+            print(self.piece)
+            self.time += dt
 
-        
-        pp = pprint.PrettyPrinter()
-        pp.pprint(self.board)
-        print('\n')
+            if 's' in self.input.keys and self.last_keys == ():
+                self.state = STATE_PAUSED
+
+            move(self)
+            if self.piece.canDrop(collapse_board(self)):
+                if self.time > 0.8:
+                    for item in self.piece.blocks:
+                        item.y -= BLOCK_LENGTH
+                    self.time = 0
+                    self.piece.current_y -= BLOCK_LENGTH
+            else:
+                for block in self.piece.blocks:
+                    row = GAME_HEIGHT//BLOCK_LENGTH - (block.top//BLOCK_LENGTH)
+                    column = block.left//BLOCK_LENGTH
+                    self.board[int(row)][int(column)] = block
+                self.piece = self.pick_a_piece()
+                self.clearRows()
+
+            pp = pprint.PrettyPrinter()
+            pp.pprint(self.board)
+            print('\n')
+            print(self.state, self.last_keys, self.input.keys)
+            print('\n')
+
+        elif self.state == STATE_PAUSED:
+            if 's' in self.input.keys and self.last_keys == ():
+                self.state = STATE_ACTIVE
+
+        elif self.state == STATE_END:
+            self.text = GLabel(text="Game\nOver",
+                               font_size=50,
+                               font_name='Arcade.ttf',
+                               x=3*GAME_WIDTH/4,
+                               y=4*GAME_HEIGHT/5,
+                               linecolor="green")
+        self.last_keys = self.input.keys
 
     def draw(self):
         self.background.draw(self.view)
+
         for line in self.lines:
             line.draw(self.view)
+
         for row in self.board:
             for item in row:
                 if item is not None:
                     item.draw(self.view)
+
         for item in self.piece.blocks:
             item.draw(self.view)
-    
+
+        self.scorepane.draw(self.view)
+        if top_out(self) and self.text is not None:
+            self.text.draw(self.view)
+
     def clearRows(self):
         new_board = []
         for row in self.board:
@@ -83,7 +115,8 @@ class Pytrix(GameApp):
                 new_board.append(row)
         rows_to_add = len(self.board) - len(new_board)
         for _ in range(rows_to_add):
-            new_board.insert(0,[None for _ in range(GAME_WIDTH//BLOCK_LENGTH)])
+            new_board.insert(
+                0, [None for _ in range(BOARD_WIDTH//BLOCK_LENGTH)])
         self.board = new_board
 
 # Helper functions
@@ -106,11 +139,9 @@ def move(self):
         if (self.piece.canRotate(collapse_board(self), self.piece.get_next_orientation())):
             self.piece.rotate()
 
-    self.last_keys = self.input.keys
-
 
 def grid(self):
-    vert_lines = GAME_WIDTH//30
+    vert_lines = BOARD_WIDTH//30
     horz_lines = GAME_HEIGHT//30
 
     for i in range(vert_lines):
@@ -118,10 +149,21 @@ def grid(self):
                                 linewidth=1,
                                 linecolor="gray"))
     for i in range(int(horz_lines)):
-        self.lines.append(GPath(points=(0, 30*(i+1), GAME_WIDTH, 30*(i+1)),
+        self.lines.append(GPath(points=(0, 30*(i+1), BOARD_WIDTH, 30*(i+1)),
                                 linewidth=1,
                                 linecolor="gray"))
 
 
 def collapse_board(self):
     return [item for row in self.board for item in row if item is not None]
+
+
+def top_out(self):
+    if any(item is not None for item in self.board[0]):
+        self.state = STATE_END
+        return True
+    return False
+
+
+# def determineState(self):
+#     if self.state == STATE_ACTIVE:
