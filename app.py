@@ -34,20 +34,8 @@ class Pytrix(GameApp):
 
     def pick_a_piece(self, init_x=BOARD_WIDTH/2, init_y=GAME_HEIGHT):
         number = random.randint(0, 6)
-        if number == 0:
-            return OPiece(init_x, init_y)
-        if number == 1:
-            return LPiece(init_x, init_y)
-        if number == 2:
-            return ZPiece(init_x, init_y)
-        if number == 3:
-            return IPiece(init_x, init_y)
-        if number == 4:
-            return JPiece(init_x, init_y)
-        if number == 5:
-            return TPiece(init_x, init_y)
-        if number == 6:
-            return SPiece(init_x, init_y)
+        prefixes = {0:"O",1:"L",2:"Z",3:"I",4:"J",5:"T",6:"S"}
+        return eval(f"{prefixes[number]}Piece({init_x}, {init_y})")
 
     def update(self, dt):
         if self.state == STATE_ACTIVE:
@@ -214,6 +202,3 @@ def top_out(self, done, tentative_blocks):
         return True
     return False
 
-
-# def determineState(self):
-#     if self.state == STATE_ACTIVE:

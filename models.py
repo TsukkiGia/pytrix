@@ -22,6 +22,7 @@ class Block(GRectangle):
 
 
 class Piece(object):
+      
     def __init__(self, init_x, init_y):
         self.current_x = init_x
         self.current_y = init_y
