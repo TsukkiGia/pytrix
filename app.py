@@ -3,6 +3,7 @@ from game2d import *
 from wave import *
 from models import *
 import random
+import pprint
 
 
 class Pytrix(GameApp):
@@ -12,8 +13,12 @@ class Pytrix(GameApp):
         self.piece = JPiece()
         self.last_keys = ()
         self.done = []
+        self.lines = []
         self.background = GRectangle(
             x=GAME_WIDTH/2, y=GAME_HEIGHT/2, width=GAME_WIDTH, height=GAME_HEIGHT, fillcolor='black')
+        self.board = [[None for i in range(GAME_WIDTH//30)]
+                      for j in range(GAME_HEIGHT//30)]
+        grid(self)
 
     def pick_a_piece(self):
         number = random.randint(0, 6)
@@ -45,11 +50,18 @@ class Pytrix(GameApp):
             for item in self.piece.blocks:
                 self.done.append(item)
             self.piece = JPiece()
+        monitor(self)
+        pp = pprint.PrettyPrinter()
+        pp.pprint(self.board)
+        print('\n')
 
     def draw(self):
         self.background.draw(self.view)
+        for line in self.lines:
+            line.draw(self.view)
         for item in self.done:
-            item.draw(self.view)
+            if item.visible:
+                item.draw(self.view)
         for item in self.piece.blocks:
             item.draw(self.view)
 
@@ -73,3 +85,24 @@ def move(self):
         self.piece.rotate()
 
     self.last_keys = self.input.keys
+
+
+def grid(self):
+    vert_lines = GAME_WIDTH//30
+    horz_lines = GAME_HEIGHT//30
+
+    for i in range(vert_lines):
+        self.lines.append(GPath(points=(30*(i), 0, 30*(i), GAME_HEIGHT),
+                                linewidth=1,
+                                linecolor="gray"))
+    for i in range(int(horz_lines)):
+        self.lines.append(GPath(points=(0, 30*(i+1), GAME_WIDTH, 30*(i+1)),
+                                linewidth=1,
+                                linecolor="gray"))
+
+
+def monitor(self):
+    for block in self.done:
+        row = GAME_HEIGHT//BLOCK_LENGTH - (block.top//BLOCK_LENGTH)
+        column = block.left//BLOCK_LENGTH
+        self.board[int(row)][int(column)] = block

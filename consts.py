@@ -7,9 +7,9 @@ import enum
 ### WINDOW CONSTANTS (all coordinates are in pixels) ###
 
 #: the width of the game display
-GAME_WIDTH = 900
+GAME_WIDTH = 300
 #: the height of the game display
-GAME_HEIGHT = 900
+GAME_HEIGHT = 600
 
 BLOCK_LENGTH = 30
 
