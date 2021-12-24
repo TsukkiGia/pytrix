@@ -35,6 +35,10 @@ class Piece(object):
     def canMoveRight(self, done):
         return all([block.right < GAME_WIDTH for block in self.blocks]) and not any([any([block.right == done_block.left and block.top == done_block.top and block.bottom == done_block.bottom for done_block in done]) for block in self.blocks])
 
+    def canRotate(self, done, tentative_blocks):
+          return all([block.bottom >= 0 and block.left >= 0 and block.right <= GAME_WIDTH for block in tentative_blocks]) and not any([any([done_block.x == block.x and done_block.y == block.y for done_block in done]) for block in tentative_blocks])
+
+
     def __repr__(self):
         return f"{self.__class__.__name__}: ({self.current_x}, {self.current_y}), {self.orientation}"
 
