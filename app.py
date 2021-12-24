@@ -183,6 +183,12 @@ def move(self):
         if (self.piece.canRotate(collapse_board(self), self.piece.get_next_orientation())):
             self.piece.rotate()
 
+    if 'spacebar' in self.input.keys and self.last_keys == ():
+        while self.piece.canDrop(collapse_board(self)):
+            for item in self.piece.blocks:
+                item.y -= BLOCK_LENGTH
+            self.piece.current_y -= BLOCK_LENGTH
+
 
 def grid(self):
     vert_lines = BOARD_WIDTH//30
