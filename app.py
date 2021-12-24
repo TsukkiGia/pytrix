@@ -10,6 +10,8 @@ class Pytrix(GameApp):
 
     def start(self):
         self.state = STATE_ACTIVE
+        self.number_of_lines = 0
+        self.level = 1
         self.time = 0
         self.piece = self.pick_a_piece()
         self.last_keys = ()
@@ -46,24 +48,31 @@ class Pytrix(GameApp):
         if self.state == STATE_ACTIVE:
             print(self.piece)
             self.time += dt
-
+            adjusted_speed = BASE_SPEED / (self.level)
             if 's' in self.input.keys and self.last_keys == ():
                 self.state = STATE_PAUSED
 
             move(self)
             if self.piece.canDrop(collapse_board(self)):
-                if self.time > 0.8:
+                if self.time > adjusted_speed:
                     for item in self.piece.blocks:
                         item.y -= BLOCK_LENGTH
                     self.time = 0
                     self.piece.current_y -= BLOCK_LENGTH
             else:
-                for block in self.piece.blocks:
-                    row = GAME_HEIGHT//BLOCK_LENGTH - (block.top//BLOCK_LENGTH)
-                    column = block.left//BLOCK_LENGTH
-                    self.board[int(row)][int(column)] = block
-                self.piece = self.pick_a_piece()
-                self.clearRows()
+                if self.time > adjusted_speed:
+                    for block in self.piece.blocks:
+                        row = GAME_HEIGHT//BLOCK_LENGTH - \
+                            (block.top//BLOCK_LENGTH)
+                        column = block.left//BLOCK_LENGTH
+                        self.board[int(row)][int(column)] = block
+
+                    self.time = 0
+                    self.clearRows()
+
+                    self.piece = self.pick_a_piece()
+                    if top_out(self, collapse_board(self), self.piece.blocks):
+                        self.state = STATE_END
 
             pp = pprint.PrettyPrinter()
             pp.pprint(self.board)
@@ -94,12 +103,12 @@ class Pytrix(GameApp):
             for item in row:
                 if item is not None:
                     item.draw(self.view)
-
-        for item in self.piece.blocks:
-            item.draw(self.view)
+        if not top_out(self, collapse_board(self), self.piece.blocks):
+            for item in self.piece.blocks:
+                item.draw(self.view)
 
         self.scorepane.draw(self.view)
-        if top_out(self) and self.text is not None:
+        if top_out(self, collapse_board(self), self.piece.blocks) and self.text is not None:
             self.text.draw(self.view)
 
     def clearRows(self):
@@ -114,6 +123,8 @@ class Pytrix(GameApp):
             else:
                 new_board.append(row)
         rows_to_add = len(self.board) - len(new_board)
+        self.number_of_lines += rows_to_add
+        self.level = (self.number_of_lines // LEVELS_TO_UPGRADE) + 1
         for _ in range(rows_to_add):
             new_board.insert(
                 0, [None for _ in range(BOARD_WIDTH//BLOCK_LENGTH)])
@@ -158,8 +169,8 @@ def collapse_board(self):
     return [item for row in self.board for item in row if item is not None]
 
 
-def top_out(self):
-    if any(item is not None for item in self.board[0]):
+def top_out(self, done, tentative_blocks):
+    if any([any([done_block.x == block.x and done_block.y == block.y for done_block in done]) for block in tentative_blocks]):
         self.state = STATE_END
         return True
     return False
