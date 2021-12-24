@@ -12,7 +12,6 @@ class Pytrix(GameApp):
         self.time = 0
         self.piece = self.pick_a_piece()
         self.last_keys = ()
-        self.done = []
         self.lines = []
         self.background = GRectangle(
             x=GAME_WIDTH/2, y=GAME_HEIGHT/2, width=GAME_WIDTH, height=GAME_HEIGHT, fillcolor='black')
@@ -41,17 +40,19 @@ class Pytrix(GameApp):
         print(self.piece)
         self.time += dt
         move(self)
-        if self.piece.canDrop(self.done):
+        if self.piece.canDrop(collapse_board(self)):
             if self.time > 0.8:
                 for item in self.piece.blocks:
                     item.y -= BLOCK_LENGTH
                 self.time = 0
                 self.piece.current_y -= BLOCK_LENGTH
         else:
-            for item in self.piece.blocks:
-                self.done.append(item)
+            for block in self.piece.blocks:
+                row = GAME_HEIGHT//BLOCK_LENGTH - (block.top//BLOCK_LENGTH)
+                column = block.left//BLOCK_LENGTH
+                self.board[int(row)][int(column)] = block
             self.piece = self.pick_a_piece()
-        monitor(self)
+        
         pp = pprint.PrettyPrinter()
         pp.pprint(self.board)
         print('\n')
@@ -60,9 +61,10 @@ class Pytrix(GameApp):
         self.background.draw(self.view)
         for line in self.lines:
             line.draw(self.view)
-        for item in self.done:
-            if item.visible:
-                item.draw(self.view)
+        for row in self.board:
+            for item in row:
+                if item is not None:
+                    item.draw(self.view)
         for item in self.piece.blocks:
             item.draw(self.view)
 
@@ -70,15 +72,15 @@ class Pytrix(GameApp):
 
 
 def move(self):
-    if 'right' in self.input.keys and self.piece.canMoveRight(self.done) and self.last_keys == ():
+    if 'right' in self.input.keys and self.piece.canMoveRight(collapse_board(self)) and self.last_keys == ():
         for item in self.piece.blocks:
             item.x += BLOCK_LENGTH
         self.piece.current_x += BLOCK_LENGTH
-    if 'left' in self.input.keys and self.piece.canMoveLeft(self.done) and self.last_keys == ():
+    if 'left' in self.input.keys and self.piece.canMoveLeft(collapse_board(self)) and self.last_keys == ():
         for item in self.piece.blocks:
             item.x -= BLOCK_LENGTH
         self.piece.current_x -= BLOCK_LENGTH
-    if 'down' in self.input.keys and self.piece.canDrop(self.done) and self.last_keys == ():
+    if 'down' in self.input.keys and self.piece.canDrop(collapse_board(self)) and self.last_keys == ():
         for item in self.piece.blocks:
             item.y -= BLOCK_LENGTH
         self.piece.current_y -= BLOCK_LENGTH
@@ -102,8 +104,5 @@ def grid(self):
                                 linecolor="gray"))
 
 
-def monitor(self):
-    for block in self.done:
-        row = GAME_HEIGHT//BLOCK_LENGTH - (block.top//BLOCK_LENGTH)
-        column = block.left//BLOCK_LENGTH
-        self.board[int(row)][int(column)] = block
+def collapse_board(self):
+    return [item for row in self.board for item in row if item is not None]
