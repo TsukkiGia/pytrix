@@ -9,9 +9,11 @@ class Pytrix(GameApp):
 
     def start(self):
         self.time = 0
-        self.piece = IPiece()
+        self.piece = LPiece()
         self.last_keys = ()
         self.done = []
+        self.background = GRectangle(
+            x=GAME_WIDTH/2, y=GAME_HEIGHT/2, width=GAME_WIDTH, height=GAME_HEIGHT, fillcolor='black')
 
     def pick_a_piece(self):
         number = random.randint(0, 6)
@@ -42,9 +44,10 @@ class Pytrix(GameApp):
         else:
             for item in self.piece.blocks:
                 self.done.append(item)
-            self.piece = IPiece()
+            self.piece = LPiece()
 
     def draw(self):
+        self.background.draw(self.view)
         for item in self.done:
             item.draw(self.view)
         for item in self.piece.blocks:
