@@ -36,8 +36,9 @@ class Piece(object):
 
 
 class OPiece(Piece):
-    def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
+    def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT, orientation = ORIENTATION.North):
         super().__init__(init_x, init_y)
+        self.orientation = orientation
         self.blocks = [
             Block(x = init_x - BLOCK_LENGTH/2, y = init_y - BLOCK_LENGTH/2, width = BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2),
@@ -48,6 +49,8 @@ class OPiece(Piece):
             Block(x = init_x + BLOCK_LENGTH/2, y = init_y - 3*BLOCK_LENGTH/2,
                   width = BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='blue', linecolor='black', linewidth=2)
         ]
+    def rotate(self):
+        pass
 
 
 class IPiece(Piece):
@@ -118,8 +121,9 @@ class IPiece(Piece):
 
 
 class SPiece(Piece):
-   def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
+    def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT, orientation = ORIENTATION.North):
         super().__init__(init_x, init_y)
+        self.orientation = orientation
         self.blocks = [
             Block(x = init_x + BLOCK_LENGTH/2, y = init_y -BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
@@ -131,7 +135,61 @@ class SPiece(Piece):
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
         ]
 
+    def rotate(self):
+        if self.orientation == ORIENTATION.West:
+            self.orientation = ORIENTATION.North
+            self.blocks = [
+            Block(x = self.current_x + BLOCK_LENGTH/2, y = self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y = self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + 3*BLOCK_LENGTH/2, y = self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x - BLOCK_LENGTH/2, y = self.current_y - 3*BLOCK_LENGTH/2,
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
+        ]
+            
+        elif self.orientation == ORIENTATION.North:
+            self.orientation = ORIENTATION.East
+            self.blocks = [
+            Block(x = self.current_x + BLOCK_LENGTH/2, y = self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y = self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + 3*BLOCK_LENGTH/2, y = self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + 3*BLOCK_LENGTH/2, y = self.current_y - 5*BLOCK_LENGTH/2,
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
+        ]
+            
+        elif self.orientation == ORIENTATION.East:
+            self.orientation = ORIENTATION.South
+            self.blocks = [
+            Block(x = self.current_x + BLOCK_LENGTH/2, y = self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y = self.current_y - 5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + 3*BLOCK_LENGTH/2, y = self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x - BLOCK_LENGTH/2, y = self.current_y - 5*BLOCK_LENGTH/2,
+            width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
+            ]
+            
+        elif self.orientation == ORIENTATION.South:
+            self.orientation = ORIENTATION.West
+            self.blocks = [
+            Block(x = self.current_x - BLOCK_LENGTH/2, y = self.current_y - BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x - BLOCK_LENGTH/2, y = self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y = self.current_y - 3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y = self.current_y - 5*BLOCK_LENGTH/2,
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='red', linecolor='black', linewidth=2)
+        ]
+            
 
+        
 class LPiece(Piece):
     def __init__(self, init_x =  GAME_WIDTH/2, init_y = GAME_HEIGHT):
         super().__init__(init_x, init_y)
@@ -148,18 +206,73 @@ class LPiece(Piece):
 
 
 class JPiece(Piece):
-    def __init__(self, init_x=GAME_WIDTH/2, init_y=GAME_HEIGHT):
+    def __init__(self, init_x=GAME_WIDTH/2, init_y=GAME_HEIGHT, orientation = ORIENTATION.North):
         super().__init__(init_x, init_y)
+        self.orientation = orientation
         self.blocks = [
-            Block(x = init_x + BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
-            Block(x = init_x + 3*BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
-            Block(x = init_x - BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x = self.current_x - BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
-            Block(x = init_x +(3*BLOCK_LENGTH/2), y=init_y-(3*BLOCK_LENGTH/2),
+            Block(x = self.current_x -(BLOCK_LENGTH/2), y=self.current_y+(BLOCK_LENGTH/2),
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2)
         ]
+
+    def rotate(self):
+        if self.orientation == ORIENTATION.West:
+            self.orientation = ORIENTATION.North
+            self.blocks = [
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x - BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x -(BLOCK_LENGTH/2), y=self.current_y+(BLOCK_LENGTH/2),
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2)]
+            
+        elif self.orientation == ORIENTATION.North:
+            self.orientation = ORIENTATION.East
+            self.blocks = [
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-5*BLOCK_LENGTH/2,
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2)
+        ]
+            
+            
+        elif self.orientation == ORIENTATION.East:
+            self.orientation = ORIENTATION.South
+            self.blocks = [
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x + 3*BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x - BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x +(3*BLOCK_LENGTH/2), y=self.current_y-(3*BLOCK_LENGTH/2),
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2)
+        ]
+            
+        elif self.orientation == ORIENTATION.South:
+            self.orientation = ORIENTATION.West
+            self.blocks = [
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x - BLOCK_LENGTH/2, y=self.current_y-5*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+                  height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2),
+            Block(x = self.current_x + BLOCK_LENGTH/2, y=self.current_y-5*BLOCK_LENGTH/2,
+                  width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='gray', linecolor='black', linewidth=2)
+        ]
+            
 
 
 class ZPiece(Piece):
