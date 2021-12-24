@@ -22,30 +22,32 @@ class Pytrix(GameApp):
                       for j in range(GAME_HEIGHT//30)]
         self.scorepane = GRectangle(
             x=3*BOARD_WIDTH/2, y=GAME_HEIGHT/2, width=BOARD_WIDTH, height=GAME_HEIGHT, fillcolor='gray')
-        # self.board = [[None for i in range(BOARD_WIDTH//30)]
-        #               for j in range(GAME_HEIGHT//30)]
         self.text = None
         self.score = 0
         self.lines_cleared = 0
+        self.next_piece = self.pick_a_piece(
+            3*GAME_WIDTH/4, GAME_HEIGHT/5)
+        self.next_piece_window = GRectangle(
+            x=3*GAME_WIDTH/4, y=GAME_HEIGHT/5 - BLOCK_LENGTH, width=6*BLOCK_LENGTH, height=4*BLOCK_LENGTH, fillcolor='black')
 
         grid(self)
 
-    def pick_a_piece(self):
+    def pick_a_piece(self, init_x=BOARD_WIDTH/2, init_y=GAME_HEIGHT):
         number = random.randint(0, 6)
         if number == 0:
-            return OPiece()
+            return OPiece(init_x, init_y)
         if number == 1:
-            return LPiece()
+            return LPiece(init_x, init_y)
         if number == 2:
-            return ZPiece()
+            return ZPiece(init_x, init_y)
         if number == 3:
-            return IPiece()
+            return IPiece(init_x, init_y)
         if number == 4:
-            return JPiece()
+            return JPiece(init_x, init_y)
         if number == 5:
-            return TPiece()
+            return TPiece(init_x, init_y)
         if number == 6:
-            return SPiece()
+            return SPiece(init_x, init_y)
 
     def update(self, dt):
         if self.state == STATE_ACTIVE:
@@ -73,7 +75,12 @@ class Pytrix(GameApp):
                     self.time = 0
                     self.clearRows()
 
-                    self.piece = self.pick_a_piece()
+                    self.piece = eval(
+                        f"{self.next_piece.__class__.__name__}()")
+                    self.next_piece = self.pick_a_piece(
+                        3*GAME_WIDTH/4, GAME_HEIGHT/5)
+
+                    # self.next_piece.current_x, self.next_piece.current_y =
                     if top_out(self, collapse_board(self), self.piece.blocks):
                         self.state = STATE_END
 
@@ -115,8 +122,13 @@ class Pytrix(GameApp):
                font_size=50,
                font_name='Arcade.ttf',
                x=3*GAME_WIDTH/4,
-               y=GAME_HEIGHT/2,
+               y=3*GAME_HEIGHT/5,
                linecolor="yellow").draw(self.view)
+
+        self.next_piece_window.draw(self.view)
+
+        for item in self.next_piece.blocks:
+            item.draw(self.view)
 
         if top_out(self, collapse_board(self), self.piece.blocks) and self.text is not None:
             self.text.draw(self.view)

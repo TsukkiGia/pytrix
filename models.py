@@ -395,13 +395,13 @@ class TPiece(Piece):
         super().__init__(init_x, init_y)
         self.orientation = orientation
         self.blocks = [
-            Block(x=init_x-BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=self.current_x-BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
-            Block(x=init_x+BLOCK_LENGTH/2, y=init_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=self.current_x+BLOCK_LENGTH/2, y=self.current_y-BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
-            Block(x=(init_x+BLOCK_LENGTH/2), y=init_y-3*BLOCK_LENGTH/2, width=BLOCK_LENGTH,
+            Block(x=(self.current_x+BLOCK_LENGTH/2), y=self.current_y+BLOCK_LENGTH/2, width=BLOCK_LENGTH,
                   height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2),
-            Block(x=(init_x)+(3*BLOCK_LENGTH/2), y=init_y-BLOCK_LENGTH/2,
+            Block(x=(self.current_x)+(3*BLOCK_LENGTH/2), y=self.current_y-BLOCK_LENGTH/2,
                   width=BLOCK_LENGTH, height=BLOCK_LENGTH, fillcolor='yellow', linecolor='black', linewidth=2)
         ]
 
