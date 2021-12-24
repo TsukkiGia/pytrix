@@ -9,6 +9,8 @@ import pprint
 class Pytrix(GameApp):
 
     def start(self):
+        self.number_of_lines = 0
+        self.level = 1
         self.time = 0
         self.piece = self.pick_a_piece()
         self.last_keys = ()
@@ -40,24 +42,28 @@ class Pytrix(GameApp):
         print(self.piece)
         self.time += dt
         move(self)
+        adjusted_speed = BASE_SPEED / (self.level)
         if self.piece.canDrop(collapse_board(self)):
-            if self.time > 0.8:
+            if self.time > adjusted_speed:
                 for item in self.piece.blocks:
                     item.y -= BLOCK_LENGTH
                 self.time = 0
                 self.piece.current_y -= BLOCK_LENGTH
         else:
-            for block in self.piece.blocks:
-                row = GAME_HEIGHT//BLOCK_LENGTH - (block.top//BLOCK_LENGTH)
-                column = block.left//BLOCK_LENGTH
-                self.board[int(row)][int(column)] = block
-            self.piece = self.pick_a_piece()
-            self.clearRows()
+            if self.time > adjusted_speed:
+                for block in self.piece.blocks:
+                    row = GAME_HEIGHT//BLOCK_LENGTH - (block.top//BLOCK_LENGTH)
+                    column = block.left//BLOCK_LENGTH
+                    self.board[int(row)][int(column)] = block
+                self.time = 0
+                self.piece = self.pick_a_piece()
+                self.clearRows()
 
         
-        pp = pprint.PrettyPrinter()
-        pp.pprint(self.board)
-        print('\n')
+        #pp = pprint.PrettyPrinter()
+        #pp.pprint(self.board)
+        #print('\n')
+        #print(self.level, self.number_of_lines)
 
     def draw(self):
         self.background.draw(self.view)
@@ -82,6 +88,8 @@ class Pytrix(GameApp):
             else:
                 new_board.append(row)
         rows_to_add = len(self.board) - len(new_board)
+        self.number_of_lines += rows_to_add
+        self.level = (self.number_of_lines // LEVELS_TO_UPGRADE) + 1
         for _ in range(rows_to_add):
             new_board.insert(0,[None for _ in range(GAME_WIDTH//BLOCK_LENGTH)])
         self.board = new_board

@@ -13,6 +13,9 @@ GAME_HEIGHT = 600
 
 BLOCK_LENGTH = 30
 
+LEVELS_TO_UPGRADE = 2
+
+BASE_SPEED = 0.8
 
 class ORIENTATION(enum.Enum):
     North = 1
