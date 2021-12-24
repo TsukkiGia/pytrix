@@ -25,6 +25,9 @@ class Pytrix(GameApp):
         # self.board = [[None for i in range(BOARD_WIDTH//30)]
         #               for j in range(GAME_HEIGHT//30)]
         self.text = None
+        self.score = 0
+        self.lines_cleared = 0
+
         grid(self)
 
     def pick_a_piece(self):
@@ -88,8 +91,8 @@ class Pytrix(GameApp):
             self.text = GLabel(text="Game\nOver",
                                font_size=50,
                                font_name='Arcade.ttf',
-                               x=3*GAME_WIDTH/4,
-                               y=4*GAME_HEIGHT/5,
+                               x=GAME_WIDTH/4,
+                               y=GAME_HEIGHT/2,
                                linecolor="green")
         self.last_keys = self.input.keys
 
@@ -108,6 +111,13 @@ class Pytrix(GameApp):
                 item.draw(self.view)
 
         self.scorepane.draw(self.view)
+        GLabel(text=f"Score:\n{self.score}\n\nLines:\n{self.lines_cleared}\n\nLevel:\n{self.level}",
+               font_size=50,
+               font_name='Arcade.ttf',
+               x=3*GAME_WIDTH/4,
+               y=GAME_HEIGHT/2,
+               linecolor="yellow").draw(self.view)
+
         if top_out(self, collapse_board(self), self.piece.blocks) and self.text is not None:
             self.text.draw(self.view)
 
@@ -123,6 +133,17 @@ class Pytrix(GameApp):
             else:
                 new_board.append(row)
         rows_to_add = len(self.board) - len(new_board)
+        self.lines_cleared += rows_to_add
+
+        if rows_to_add == 1:
+            self.score += 100*self.level
+        elif rows_to_add == 2:
+            self.score += 300 * self.level
+        elif rows_to_add == 3:
+            self.score += 500*self.level
+        elif rows_to_add == 4:
+            self.score += 800*self.level
+
         self.number_of_lines += rows_to_add
         self.level = (self.number_of_lines // LEVELS_TO_UPGRADE) + 1
         for _ in range(rows_to_add):
